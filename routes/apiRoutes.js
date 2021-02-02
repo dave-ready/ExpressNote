@@ -1,15 +1,18 @@
 const path = require ("path")
+const notes = require ("../db/db.json")
 const fs = require ("fs");
 
 module.exports = function (app) {
     app.get("/api/notes", function(req, res) {
-        fs.readFile(path.join(__dirname, "../db/db.json"), function (err, data) {
-            if (err) throw (err);
-            res.json(JSON.parse(data))
+        res.json(notes);
+    });
+    
+    app.post("/api/notes", function(req, res) {
+        notes.push(req.body);
+        fs.writeFile(path.join(__dirname, "../db/db.json"), JSON.stringify(notes), (err) => {
+            if (err) throw err;
+           res.json(notes);
         })
         
-    });
-    // app.post("/api/db", function(req, res) {
-
-    // })
+    })
 };
