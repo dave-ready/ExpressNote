@@ -20,7 +20,12 @@ module.exports = function (app) {
         
     });
 
-    // app.delete("/api/notes/:id", function(req, res) {
-
-    // })
+    app.delete("/api/notes/:id", function(req, res) {
+        const id = req.id
+        notes.splice(id, 1);
+        fs.writeFile(path.join(__dirname, "../db/db.json"), JSON.stringify(notes), (err) => {
+            if (err) throw err;
+           res.json(notes);
+        });
+    })
 };
